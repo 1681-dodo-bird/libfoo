@@ -21,11 +21,11 @@ type Hoge struct {
 
 type Foo interface{}
 
+type XXX func() string
+
 //export Asdf
-func Asdf() Hoge {
-	h := Hoge{Foo: 33, Bar: 44.333}
-	copy(h.Data[:], "Hello World!!!!!!!!!!!!")
-	return h
+func Asdf() XXX {
+	return Baaaaar
 }
 
 //export FugaFuga
@@ -36,14 +36,12 @@ func FugaFuga() Foo {
 }
 
 //export HogeHoge
-func HogeHoge(a Foo) {
-	var h Hoge
-	switch a := a.(type) {
+func HogeHoge(h Foo) {
+	switch h := h.(type) {
 	case Hoge:
-		fmt.Println("is Hoge", a)
-		h = a
+		fmt.Println("is Hoge", h)
 	default:
-		fmt.Println("is not Hoge", a)
+		fmt.Println("is not Hoge", h)
 		return
 	}
 	// h := Hoge{Foo: 33, Bar: 44.333}
