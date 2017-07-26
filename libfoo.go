@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
 type Hoge struct {
@@ -16,10 +17,28 @@ type Hoge struct {
 	Data [64]byte
 }
 
-//export HogeHoge
-func HogeHoge() {
+type Foo interface{}
+
+//export FugaFuga
+func FugaFuga() Foo {
 	h := Hoge{Foo: 33, Bar: 44.333}
 	copy(h.Data[:], "Hello World!!!!!!!!!!!!")
+	return h
+}
+
+//export HogeHoge
+func HogeHoge(a Foo) {
+	var h Hoge
+	switch a := a.(type) {
+	case Hoge:
+		fmt.Println("is Hoge", a)
+		h = a
+	default:
+		fmt.Println("is not Hoge")
+		panic("ERR")
+	}
+	// h := Hoge{Foo: 33, Bar: 44.333}
+	// copy(h.Data[:], "Hello World!!!!!!!!!!!!")
 
 	// pack
 	buf := &bytes.Buffer{}
@@ -59,5 +78,7 @@ func Fooooo() int64 {
 }
 
 func main() {
-	HogeHoge()
+	startAt := time.Now()
+	HogeHoge(FugaFuga())
+	fmt.Println(time.Now().Sub(startAt))
 }
