@@ -31,6 +31,8 @@ lib.HogeHoge.argtypes = [GoInterface]
 lib.Baaaaar.restype = GoString
 lib.Bar2.restype = Bar2_return
 lib.Boo.argypes = [GoString]
+lib.Asdf.restype = ctypes.c_void_p
+lib.Qwer.argtypes = [ctypes.c_void_p]
 
 # overhead計測。表示される値は2回の呼び出しなので2で割った値が1回のcall
 startAt = datetime.datetime.utcnow()
@@ -50,3 +52,7 @@ gst = GoString()
 gst.p = "hello, world from py"
 gst.n = len(gst.p)
 lib.Boo(gst)
+
+# Funcをバイパス
+f = lib.Asdf()
+lib.Qwer(f)

@@ -28,6 +28,11 @@ func Asdf() XXX {
 	return Baaaaar
 }
 
+//export Qwer
+func Qwer(x XXX) {
+	fmt.Println(x())
+}
+
 //export FugaFuga
 func FugaFuga() Foo {
 	h := Hoge{Foo: 33, Bar: 44.333}
