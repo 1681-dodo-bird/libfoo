@@ -1,5 +1,7 @@
 package main
 
+// #include <Python.h>
+// static PyObject* hoge(PyObject* )
 import (
 	"C"
 	"bytes"
@@ -19,6 +21,13 @@ type Hoge struct {
 
 type Foo interface{}
 
+//export Asdf
+func Asdf() Hoge {
+	h := Hoge{Foo: 33, Bar: 44.333}
+	copy(h.Data[:], "Hello World!!!!!!!!!!!!")
+	return h
+}
+
 //export FugaFuga
 func FugaFuga() Foo {
 	h := Hoge{Foo: 33, Bar: 44.333}
@@ -34,8 +43,8 @@ func HogeHoge(a Foo) {
 		fmt.Println("is Hoge", a)
 		h = a
 	default:
-		fmt.Println("is not Hoge")
-		panic("ERR")
+		fmt.Println("is not Hoge", a)
+		return
 	}
 	// h := Hoge{Foo: 33, Bar: 44.333}
 	// copy(h.Data[:], "Hello World!!!!!!!!!!!!")
@@ -58,7 +67,7 @@ func HogeHoge(a Foo) {
 		panic(err)
 	}
 	fmt.Printf("%d %f %s\n", h2.Foo, h2.Bar, h2.Data)
-
+	return
 }
 
 //export Fooooo
@@ -75,6 +84,21 @@ func Fooooo() int64 {
 	fmt.Printf("%s\n", body)
 
 	return 99990
+}
+
+//export Baaaaar
+func Baaaaar() string {
+	return "Hello, Bar"
+}
+
+//export Bar2
+func Bar2() (string, string) {
+	return "Hello, Bar2", "bra bra bra"
+}
+
+//export Boo
+func Boo(v string) {
+	fmt.Println(v)
 }
 
 func main() {
