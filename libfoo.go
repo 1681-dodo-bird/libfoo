@@ -16,6 +16,8 @@ import (
 type Hoge struct {
 	Foo  int64
 	Bar  float64
+	Baz  uint8
+	Boo  uint32
 	Data [64]byte
 }
 
@@ -35,7 +37,7 @@ func Qwer(x XXX) {
 
 //export FugaFuga
 func FugaFuga() Foo {
-	h := Hoge{Foo: 33, Bar: 44.333}
+	h := Hoge{Foo: 33, Bar: 44.333, Baz: 0xfe, Boo: 0x80000000}
 	copy(h.Data[:], "Hello World!!!!!!!!!!!!")
 	return h
 }
@@ -62,6 +64,17 @@ func HogeHoge(h Foo) {
 	// print hex
 	hextxt := hex.EncodeToString(buf.Bytes())
 	fmt.Println(hextxt)
+	border := []int{8, 8, 1, 4, -1}
+	startAt := 0
+	for _, v := range border {
+		if v >= 0 {
+			fmt.Println(hextxt[startAt*2 : (startAt+v)*2])
+		} else {
+			fmt.Println(hextxt[startAt*2:])
+		}
+
+		startAt += v
+	}
 
 	// unpack
 	h2 := Hoge{}
@@ -69,7 +82,7 @@ func HogeHoge(h Foo) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("%d %f %s\n", h2.Foo, h2.Bar, h2.Data)
+	fmt.Printf("%d %f %v %v %s\n", h2.Foo, h2.Bar, h2.Baz, h2.Boo, h2.Data)
 	return
 }
 
